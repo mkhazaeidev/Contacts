@@ -1,8 +1,19 @@
+from IOStream import IOStream
+
+
 class Name:
-    def __init__(self, first: str, last: str, middle: str = ""):
-        self.first = first.lower()
-        self.last = last.lower()
-        self.middle = middle.lower()
+    def __init__(self, first: str = "", last: str = "", middle: str = ""):
+        if all([first, last, middle]):
+            self.first = first.lower()
+            self.last = last.lower()
+            self.middle = middle.lower()
+        else:
+            self.set_name()
+
+    def set_name(self):
+        self.first = IOStream.get_name(prompt="First Name: ")
+        self.last = IOStream.get_name("Last Name: ")
+        self.middle = IOStream.get_name("Middle Name: ")
 
     def get_full_name(self):
         if self.middle:
@@ -104,3 +115,8 @@ class Email:
 
     def __dict__(self):
         return {"email": self.email}
+
+
+class Contact:
+    def __init__(self):
+        self.name = Name()
