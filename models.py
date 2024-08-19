@@ -11,7 +11,7 @@ class Name:
             full_name = f"{self.first} {self.last}"
         return full_name.capitalize()
 
-    def get_csv_info(self):
+    def get_name_info(self):
         return f"{self.first},{self.last},{self.middle}"
 
     @staticmethod
@@ -30,3 +30,77 @@ class Name:
 
     def __dict__(self):
         return {"first": self.first, "last": self.last, "middle": self.middle}
+
+
+class Phone:
+    def __init__(self, mobile: str, home: str = "", work: str = "", fax: str = ""):
+        self.mobile = mobile
+        self.home = home
+        self.work = work
+        self.fax = fax
+
+    def get_phone_info(self):
+        return f"{self.mobile},{self.home},{self.work},{self.fax}"
+
+    @staticmethod
+    def get_csv_header():
+        return f"Mobile,Home,Work,Fax"
+
+    def __str__(self):
+        phones = [self.mobile, self.home, self.work, self.fax]
+        phones = list(
+            map(lambda item: item if item else "NotSet", phones)
+        )
+        phones = ",".join(phones)
+        return phones
+
+    def __repr__(self):
+        return f"Phone('{self.mobile}', '{self.home}', '{self.work}', '{self.fax}')"
+
+    def __dict__(self):
+        return {"mobile": self.mobile, "home": self.home, "work": self.work, "fax": self.fax}
+
+
+class Address:
+    def __init__(self, street: str, city: str, state: str, zip_code: str):
+        self.street = street
+        self.city = city
+        self.state = state
+        self.zip_code = zip_code
+
+    def get_address_info(self):
+        return f"{self.street},{self.city},{self.state},{self.zip_code}"
+
+    @staticmethod
+    def get_csv_header():
+        return f"Street Address,City,State,Zip Code"
+
+    def __str__(self):
+        return f"{self.street}, {self.city}, {self.state}, {self.zip_code}"
+
+    def __repr__(self):
+        return f"Address('{self.street}, {self.city}, {self.state}, {self.zip_code}')"
+
+    def __dict__(self):
+        return {"street": self.street, "city": self.city, "state": self.state, "zip_code": self.zip_code}
+
+
+class Email:
+    def __init__(self, email: str):
+        self.email = email
+
+    def get_email_info(self):
+        return f"{self.email}"
+
+    @staticmethod
+    def get_csv_header():
+        return f"Email"
+
+    def __str__(self):
+        return f"{self.email}"
+
+    def __repr__(self):
+        return f"Email('{self.email}')"
+
+    def __dict__(self):
+        return {"email": self.email}
