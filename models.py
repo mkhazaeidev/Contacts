@@ -11,7 +11,7 @@ class Name:
             self.set_name()
 
     def set_name(self):
-        self.first = IOStream.get_name(prompt="First Name: ")
+        self.first = IOStream.get_name("First Name: ")
         self.last = IOStream.get_name("Last Name: ")
         self.middle = IOStream.get_name("Middle Name: ")
 
