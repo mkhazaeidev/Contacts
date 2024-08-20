@@ -144,7 +144,29 @@ class Email:
         return f"Email('{self.email}')"
 
 
+class ContactManager:
+    def all(self):
+        pass
+
+    def save(self):
+        pass
+
+    def delete(self):
+        pass
+
+    def update(self):
+        pass
+
+    def create(self):
+        pass
+
+    def search(self):
+        pass
+
+
 class Contact:
+    objects = ContactManager()
+
     def __init__(self):
         self._id = uuid.uuid4()
         self.name = Name()
@@ -190,4 +212,3 @@ class Contact:
 
     def __iter__(self):
         return self
-
