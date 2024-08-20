@@ -1,5 +1,6 @@
 import uuid
 
+from managers import ContactManager
 from IOStream import IOStream
 
 
@@ -142,26 +143,6 @@ class Email:
 
     def __repr__(self):
         return f"Email('{self.email}')"
-
-
-class ContactManager:
-    def all(self):
-        pass
-
-    def save(self):
-        pass
-
-    def delete(self):
-        pass
-
-    def update(self):
-        pass
-
-    def create(self):
-        pass
-
-    def search(self):
-        pass
 
 
 class Contact:
