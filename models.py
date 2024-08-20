@@ -198,12 +198,12 @@ class Contact:
         }
 
     @staticmethod
-    def get_csv_header(self):
+    def get_csv_header():
         headers = (
-            self.name.get_csv_header(),
-            self.phone.get_csv_header(),
-            self.email.get_csv_header(),
-            self.address.get_csv_header()
+            Name.get_csv_header(),
+            Phone.get_csv_header(),
+            Email.get_csv_header(),
+            Address.get_csv_header()
         )
         return f"ID,{','.join(headers)}"
 
