@@ -145,8 +145,18 @@ class Email:
         return f"Email('{self.email}')"
 
 
+def get_contacts_csv_header():
+    headers = (
+        Name.get_csv_header(),
+        Phone.get_csv_header(),
+        Email.get_csv_header(),
+        Address.get_csv_header()
+    )
+    return f"ID,{','.join(headers)}"
+
+
 class Contact:
-    objects = ContactManager()
+    objects = ContactManager(get_contacts_csv_header())
 
     def __init__(self):
         self._id = uuid.uuid4()
@@ -177,16 +187,6 @@ class Contact:
             "email": self.email.to_dict(),
             "address": self.address.to_dict(),
         }
-
-    @staticmethod
-    def get_csv_header():
-        headers = (
-            Name.get_csv_header(),
-            Phone.get_csv_header(),
-            Email.get_csv_header(),
-            Address.get_csv_header()
-        )
-        return f"ID,{','.join(headers)}"
 
     def __str__(self):
         return f"{self._id}, {str(self.name)}, {str(self.phone)}, {str(self.email)}, {str(self.address)}"

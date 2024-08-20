@@ -1,6 +1,19 @@
+import csv
+
+from database import DBConnection
+
+
 class ContactManager:
-    def all(self):
-        pass
+    def __init__(self, headers: str):
+        self.headers = headers
+
+    def all(self, file_name):
+        db = DBConnection(file_name, self.headers)
+        contacts = []
+        with db as file:
+            for contact in csv.reader(file):
+                contacts.append(contact)
+        return contacts
 
     def save(self):
         pass
