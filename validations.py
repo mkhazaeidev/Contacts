@@ -3,36 +3,44 @@ import re
 
 class Validations:
     @staticmethod
-    def is_name(name):
+    def is_name(name, empty=False):
         pattern = r'^[A-Za-z ]+$'
-        if re.match(pattern, name):
+        if not name and empty:
+            return True
+        elif re.match(pattern, name):
             return True
         return False
 
     @staticmethod
-    def is_email(email):
+    def is_email(email, empty=False):
         pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-        if re.match(pattern, email):
+        if not email and empty:
+            return True
+        elif re.match(pattern, email):
             return True
         return False
 
     @staticmethod
-    def is_cellphone(cellphone, ir=False):
+    def is_cellphone(cellphone, empty=False, ir=False):
         if ir:
             pattern = r"^09\d{9}$"
         else:
             pattern = r"^\+?\d{1,3}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$"
-        if re.match(pattern, cellphone):
+        if not cellphone and empty:
+            return True
+        elif re.match(pattern, cellphone):
             return True
         return False
 
     @staticmethod
-    def is_landline(landline, ir=False):
+    def is_landline(landline, empty=False, ir=False):
         if ir:
             pattern = r"^0\d{2,3}-?\d{7,8}$"
         else:
             pattern = r"^\(?(0\d{2,3}[ -]?\d{3,4}[ -]?\d{3,4}|\(0\d{2,3}\) \d{3,4}[ -]?\d{3,4})$"
-        if re.match(pattern, landline):
+        if not landline and empty:
+            return True
+        elif re.match(pattern, landline):
             return True
         return False
 

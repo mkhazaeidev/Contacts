@@ -6,37 +6,37 @@ from validations import Validations
 
 class IOStream:
     @staticmethod
-    def get_name(prompt: str) -> str:
+    def get_name(prompt: str, empty=False) -> str:
         while True:
             name = input(prompt)
-            if Validations.is_name(name):
+            if Validations.is_name(name, empty):
                 return name
             else:
-                print("Please enter a valid name.")
+                print("Invalid name. Please try again.")
 
     @staticmethod
-    def get_email(prompt: str) -> str:
+    def get_email(prompt: str, empty=False) -> str:
         while True:
             email = input(prompt)
-            if Validations.is_email(email):
+            if Validations.is_email(email, empty):
                 return email
             else:
                 print("Please enter a valid email.")
 
     @staticmethod
-    def get_cellphone(prompt: str) -> str:
+    def get_cellphone(prompt: str, empty=False, ir=False) -> str:
         while True:
             cellphone = input(prompt)
-            if Validations.is_cellphone(cellphone):
+            if Validations.is_cellphone(cellphone, empty, ir):
                 return cellphone
             else:
                 print("Please enter a valid cellphone number.")
 
     @staticmethod
-    def get_landline(landline: str) -> str:
+    def get_landline(landline: str, empty=False, ir=False) -> str:
         while True:
             landline = input(landline)
-            if Validations.is_landline(landline):
+            if Validations.is_landline(landline, empty, ir):
                 return landline
             else:
                 print("Please enter a valid landline number.")
@@ -54,3 +54,12 @@ class IOStream:
             else:
                 print("Please enter a valid password.")
 
+    @staticmethod
+    def get_address() -> dict:
+        address = {
+            'street': input("Street: "),
+            'city': input("City: "),
+            'state': input("State: "),
+            'zip_code': input("Zip Code: "),
+        }
+        return address

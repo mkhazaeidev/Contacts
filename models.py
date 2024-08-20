@@ -1,3 +1,5 @@
+import uuid
+
 from IOStream import IOStream
 
 
@@ -8,12 +10,12 @@ class Name:
             self.last = last.lower()
             self.middle = middle.lower()
         else:
-            self.set_name()
+            self.set_names()
 
-    def set_name(self):
+    def set_names(self):
         self.first = IOStream.get_name("First Name: ")
         self.last = IOStream.get_name("Last Name: ")
-        self.middle = IOStream.get_name("Middle Name: ")
+        self.middle = IOStream.get_name("Middle Name: ", empty=True)
 
     def get_full_name(self):
         if self.middle:
@@ -24,6 +26,9 @@ class Name:
 
     def get_name_info(self):
         return f"{self.first},{self.last},{self.middle}"
+
+    def to_dict(self):
+        return self.__dict__
 
     @staticmethod
     def get_csv_header():
@@ -39,19 +44,28 @@ class Name:
     def __repr__(self):
         return f"Name('{self.first}', '{self.last}', {self.middle})"
 
-    def __dict__(self):
-        return {"first": self.first, "last": self.last, "middle": self.middle}
-
 
 class Phone:
-    def __init__(self, mobile: str, home: str = "", work: str = "", fax: str = ""):
-        self.mobile = mobile
-        self.home = home
-        self.work = work
-        self.fax = fax
+    def __init__(self, mobile: str = "", home: str = "", work: str = "", fax: str = ""):
+        if any([mobile, home, work, fax]):
+            self.mobile = mobile
+            self.home = home
+            self.work = work
+            self.fax = fax
+        else:
+            self.set_phones()
+
+    def set_phones(self):
+        self.mobile = IOStream.get_cellphone("Mobile Number: ", ir=True)
+        self.home = IOStream.get_landline("Home Number: ", empty=True, ir=True)
+        self.work = IOStream.get_landline("Home Number: ", empty=True, ir=True)
+        self.fax = IOStream.get_landline("Home Number: ", empty=True, ir=True)
 
     def get_phone_info(self):
         return f"{self.mobile},{self.home},{self.work},{self.fax}"
+
+    def to_dict(self):
+        return self.__dict__
 
     @staticmethod
     def get_csv_header():
@@ -68,19 +82,29 @@ class Phone:
     def __repr__(self):
         return f"Phone('{self.mobile}', '{self.home}', '{self.work}', '{self.fax}')"
 
-    def __dict__(self):
-        return {"mobile": self.mobile, "home": self.home, "work": self.work, "fax": self.fax}
-
 
 class Address:
-    def __init__(self, street: str, city: str, state: str, zip_code: str):
-        self.street = street
-        self.city = city
-        self.state = state
-        self.zip_code = zip_code
+    def __init__(self, street: str = "", city: str = "", state: str = "", zip_code: str = ""):
+        if any([street, city, state, zip_code]):
+            self.street = street
+            self.city = city
+            self.state = state
+            self.zip_code = zip_code
+        else:
+            self.set_address()
+
+    def set_address(self) -> None:
+        address = IOStream.get_address()
+        self.street = address["street"]
+        self.city = address["city"]
+        self.state = address["state"]
+        self.zip_code = address["zip_code"]
 
     def get_address_info(self):
         return f"{self.street},{self.city},{self.state},{self.zip_code}"
+
+    def to_dict(self):
+        return self.__dict__
 
     @staticmethod
     def get_csv_header():
@@ -92,16 +116,22 @@ class Address:
     def __repr__(self):
         return f"Address('{self.street}, {self.city}, {self.state}, {self.zip_code}')"
 
-    def __dict__(self):
-        return {"street": self.street, "city": self.city, "state": self.state, "zip_code": self.zip_code}
-
 
 class Email:
-    def __init__(self, email: str):
-        self.email = email
+    def __init__(self, email: str = ""):
+        if email:
+            self.email = email
+        else:
+            self.set_email()
+
+    def set_email(self):
+        self.email = IOStream.get_email("Email Address: ", empty=True)
 
     def get_email_info(self):
         return f"{self.email}"
+
+    def to_dict(self):
+        return self.__dict__
 
     @staticmethod
     def get_csv_header():
@@ -113,10 +143,51 @@ class Email:
     def __repr__(self):
         return f"Email('{self.email}')"
 
-    def __dict__(self):
-        return {"email": self.email}
-
 
 class Contact:
     def __init__(self):
+        self._id = uuid.uuid4()
         self.name = Name()
+        self.phone = Phone()
+        self.email = Email()
+        self.address = Address()
+
+    @property
+    def id(self):
+        return self._id.int
+
+    def get_contact_info(self):
+        info = (
+            self.id,
+            self.name.get_name_info(),
+            self.phone.get_phone_info(),
+            self.email.get_email_info(),
+            self.address.get_address_info()
+        )
+        return f"{','.join(info)}"
+
+    def to_dict(self):
+        return {
+            "id": self._id,
+            "name": self.name.to_dict(),
+            "phone": self.phone.to_dict(),
+            "email": self.email.to_dict(),
+            "address": self.address.to_dict(),
+        }
+
+    @staticmethod
+    def get_csv_header(self):
+        headers = (
+            self.name.get_csv_header(),
+            self.phone.get_csv_header(),
+            self.email.get_csv_header(),
+            self.address.get_csv_header()
+        )
+        return f"ID,{','.join(headers)}"
+
+    def __str__(self):
+        return f"{self._id}, {str(self.name)}, {str(self.phone)}, {str(self.email)}, {str(self.address)}"
+
+    def __iter__(self):
+        return self
+
